@@ -1,62 +1,10 @@
 import { useState } from "react";
 import { ArrowCircleRightIcon } from "@heroicons/react/solid";
+import { assert } from "superstruct";
+import { WelcomeStruct } from "../util/structs";
 
 import { TextInput, FormLabel, SelectInput } from "./index";
-
-const provinces = [
-  {
-    name: "Alberta",
-    abbreviation: "AB",
-  },
-  {
-    name: "British Columbia",
-    abbreviation: "BC",
-  },
-  {
-    name: "Manitoba",
-    abbreviation: "MB",
-  },
-  {
-    name: "New Brunswick",
-    abbreviation: "NB",
-  },
-  {
-    name: "Newfoundland and Labrador",
-    abbreviation: "NL",
-  },
-  {
-    name: "Northwest Territories",
-    abbreviation: "NT",
-  },
-  {
-    name: "Nova Scotia",
-    abbreviation: "NS",
-  },
-  {
-    name: "Nunavut",
-    abbreviation: "NU",
-  },
-  {
-    name: "Ontario",
-    abbreviation: "ON",
-  },
-  {
-    name: "Prince Edward Island",
-    abbreviation: "PE",
-  },
-  {
-    name: "Quebec",
-    abbreviation: "QC",
-  },
-  {
-    name: "Saskatchewan",
-    abbreviation: "SK",
-  },
-  {
-    name: "Yukon Territory",
-    abbreviation: "YT",
-  },
-];
+import { provinces } from "../util/const";
 
 const WelcomeForm = () => {
   const [formState, setFormState] = useState({
@@ -68,12 +16,39 @@ const WelcomeForm = () => {
     postalCode: "",
     province: "Alberta",
   }); // or localstorage
+  const [errorState, setErrorState] = useState({
+    firstName: false,
+    lastName: false,
+    phone: false,
+    address: false,
+    city: false,
+    postalCode: false,
+    province: false,
+  });
 
-  const handleChange = (e) => {
-    const updatedFormState = { ...formState, [e.target.name]: e.target.value };
+  const handleChange = (event) => {
+    const updatedFormState = {
+      ...formState,
+      [event.target.name]: event.target.value,
+    };
     setFormState(updatedFormState);
   };
-  const handleSubmit = () => {};
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    try {
+      assert(formState, WelcomeStruct);
+    } catch (error) {
+      const formErrors = {};
+      for (const failure of error.failures()) {
+        formErrors[failure.path] = true;
+        setErrorState(formErrors);
+      }
+    }
+
+    // - go to next page
+  };
 
   return (
     <>
@@ -94,6 +69,8 @@ const WelcomeForm = () => {
               name="firstName"
               onChange={handleChange}
               value={formState.firstName}
+              error={errorState.firstName}
+              errorLabel="first name"
             />
           </div>
           <div>
@@ -104,6 +81,8 @@ const WelcomeForm = () => {
               name="lastName"
               onChange={handleChange}
               value={formState.lastName}
+              error={errorState.lastName}
+              errorLabel="last name"
             />
           </div>
         </div>
@@ -115,6 +94,8 @@ const WelcomeForm = () => {
             name="phone"
             onChange={handleChange}
             value={formState.phone}
+            error={errorState.phone}
+            errorLabel="phone number"
           />
         </div>
         <div className="mb-3">
@@ -125,6 +106,8 @@ const WelcomeForm = () => {
             name="address"
             onChange={handleChange}
             value={formState.address}
+            error={errorState.address}
+            errorLabel="street address"
           />
         </div>
         <div className="App-location mb-5">
@@ -136,6 +119,8 @@ const WelcomeForm = () => {
               name="city"
               onChange={handleChange}
               value={formState.city}
+              error={errorState.city}
+              errorLabel="city"
             />
           </div>
           <div>
@@ -164,6 +149,8 @@ const WelcomeForm = () => {
               name="postalCode"
               onChange={handleChange}
               value={formState.postalCode}
+              error={errorState.postalCode}
+              errorLabel="postal code"
             />
           </div>
         </div>

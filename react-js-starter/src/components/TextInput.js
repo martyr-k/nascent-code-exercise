@@ -4,15 +4,10 @@ const isVowel = (word) => {
 };
 
 const renderErrorText = (error, field, name) => {
-  if (typeof error === "string") {
-    return <p className="text-xs text-red-500 mt-2">{error}</p>;
-  }
   if (error && field) {
     return (
-      <p className="text-xs text-red-500 mt-2">
-        {name === "postalCode" ||
-        name === "email" ||
-        name === "clientPostalCode"
+      <p className="text-xs text-red-500 mt-1">
+        {name === "postalCode"
           ? `A valid ${field} is required.`
           : `A${isVowel(field) ? "n" : ""} ${field} is required.`}
       </p>
@@ -32,14 +27,6 @@ const TextInput = ({ className, name, error, errorLabel, type, ...rest }) => {
           className ? ` ${className}` : ""
         }`}
         type={type}
-        onKeyPress={(event) => {
-          if (type === "number") {
-            if (!/[0-9.]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }
-        }}
-        // https://stackoverflow.com/questions/43687964/only-numbers-input-number-in-react
         name={name}
         {...rest}
       />
