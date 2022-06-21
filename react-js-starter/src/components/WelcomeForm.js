@@ -156,7 +156,7 @@ const WelcomeForm = () => {
         </div>
         <button
           type="submit"
-          className="px-3 py-2 rounded font-semibold bg-red-800 text-white hover:bg-red-900 transition-colors flex ml-auto"
+          className="px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ml-auto"
         >
           Choose a Pokèmon
           <ArrowCircleRightIcon className="h-6 ml-2" />
