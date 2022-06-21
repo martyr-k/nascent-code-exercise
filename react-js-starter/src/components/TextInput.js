@@ -28,8 +28,8 @@ const TextInput = ({ className, name, error, errorLabel, type, ...rest }) => {
           error
             ? "border-red-500 focus:border-red-400"
             : "border-gray-500 focus:border-blue-400"
-        } rounded p-1 w-full focus:outline-none focus:ring focus:border appearance-none ${
-          className ? className : ""
+        } rounded p-2 w-full focus:outline-none focus:ring focus:border appearance-none${
+          className ? ` ${className}` : ""
         }`}
         type={type}
         onKeyPress={(event) => {

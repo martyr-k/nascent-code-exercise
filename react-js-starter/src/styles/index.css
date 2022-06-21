@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   background: rgb(238, 174, 185);
   background: radial-gradient(
