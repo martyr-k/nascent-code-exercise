@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import { NavNumber } from "./components";
+import { NavNumber, WelcomeForm } from "./components";
 import "./styles/App.css";
 
 function App() {
@@ -19,7 +19,11 @@ function App() {
           <NavNumber value={2} path="/choose-pokemon" />
           <NavNumber value={3} path="review" />
         </div>
-        <Outlet />
+        <Routes>
+          <Route path="/" element={<WelcomeForm />} />
+          <Route path="/choose-pokemon" element={<div></div>} />
+          <Route path="/review" element={<div></div>} />
+        </Routes>
       </section>
       <footer></footer>
     </>
