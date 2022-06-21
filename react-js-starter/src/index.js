@@ -1,14 +1,25 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+
+import { WelcomeForm } from "./components";
 
 import "./styles/index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path="/" element={<WelcomeForm />} />
+          <Route path="/choose-pokemon" element={<div></div>} />
+          <Route path="/review" element={<div></div>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

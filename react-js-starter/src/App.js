@@ -1,4 +1,6 @@
-import { NavNumber, WelcomeForm } from "./components";
+import { Outlet } from "react-router-dom";
+
+import { NavNumber } from "./components";
 import "./styles/App.css";
 
 function App() {
@@ -13,12 +15,11 @@ function App() {
       </header>
       <section className="mt-10 max-w-xl mx-auto">
         <div className="flex justify-between mb-5">
-          <NavNumber value={1} />
-          <NavNumber value={2} />
-          <NavNumber value={3} />
+          <NavNumber value={1} path="/" />
+          <NavNumber value={2} path="/choose-pokemon" />
+          <NavNumber value={3} path="review" />
         </div>
-
-        <WelcomeForm />
+        <Outlet />
       </section>
       <footer></footer>
     </>
