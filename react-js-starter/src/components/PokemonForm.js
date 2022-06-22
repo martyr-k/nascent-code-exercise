@@ -10,6 +10,7 @@ import {
   PaginatedList,
 } from "./index";
 import { pokemonColors } from "../util/const";
+import { getMagicNumber, parsePokemonName } from "../util/helpers";
 
 const PokemonForm = () => {
   const [method, setMethod] = useState("");
@@ -19,6 +20,7 @@ const PokemonForm = () => {
   const [pokemonByColor, setPokemonByColor] = useState("");
   const [pokemonList, setPokemonList] = useState([]);
   const [color, setColor] = useState("");
+  const [initials, setInitials] = useState("");
 
   useEffect(() => {
     if (method === "color" && color) {
@@ -35,18 +37,27 @@ const PokemonForm = () => {
     }
   }, [method, color]);
 
+  // - make into hook!
   const handleMethodChange = (event) => {
     setMethod(event.target.value);
     setError("");
   };
 
+  // - make into hook!
   const handleColorChange = (event) => {
     setColor(event.target.value);
   };
 
+  // - make into hook!
   const handlePokemonChange = (event) => {
     setPokemon(event.target.value);
     setError("");
+  };
+
+  // - make into hook!
+  const handleInitialChange = (event) => {
+    setError("");
+    setInitials(event.target.value);
   };
 
   const selectPokemonByColor = (pokemon) => {
@@ -55,7 +66,9 @@ const PokemonForm = () => {
 
   const isSubmitDisabled = () => {
     return (
-      (!pokemon && method === "name") || (!pokemonByColor && method === "color")
+      (!pokemon && method === "name") ||
+      (!pokemonByColor && method === "color") ||
+      (!initials && method === "initials")
     );
   };
 
@@ -88,6 +101,27 @@ const PokemonForm = () => {
         // submit pokemon via app component
         break;
       case "initials":
+        const [initialOne, initialTwo] = initials.toLowerCase();
+        if (initialOne.match(/[a-z]/i) && initialTwo.match(/[a-z]/i)) {
+          try {
+            const response = await axios.get(
+              `https://pokeapi.co/api/v2/pokemon/${getMagicNumber(
+                initialOne,
+                initialTwo
+              )}`
+            );
+            console.log(response.data.name);
+            console.log(parsePokemonName(response.data.name));
+            // submit pokemon via app component
+          } catch (error) {
+            console.log(error);
+            setSubmtting(false);
+            alert("Something went wrong, please try again later.");
+          }
+        } else {
+          setError("invalid-initials");
+        }
+        setSubmtting(false);
         break;
       default:
         setError("no-search");
@@ -188,6 +222,27 @@ const PokemonForm = () => {
                 selectedPokemon={pokemonByColor}
                 selectPokemonByColor={selectPokemonByColor}
               />
+            )}
+          </div>
+        )}
+        {method === "initials" && (
+          <div className="mb-4">
+            <FormLabel htmlFor="initials">Initials:</FormLabel>
+            <TextInput
+              type="text"
+              id="initials"
+              name="initials"
+              onChange={handleInitialChange}
+              value={initials}
+              minLength={2}
+              maxLength={2}
+              required
+              error={error === "invalid-initials"}
+            />
+            {error === "invalid-initials" && (
+              <p className="text-xs text-red-500 mt-1">
+                Please enter valid initials.
+              </p>
             )}
           </div>
         )}
