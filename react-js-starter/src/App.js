@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { NavNumber, WelcomeForm, PokemonForm } from "./components";
 import "./styles/App.css";
 
 function App() {
+  const [appState, setAppState] = useState({ welcome: null, pokemon: null });
+
   return (
     <>
       <header className="text-white text-center">
@@ -25,7 +28,6 @@ function App() {
           <Route path="/review" element={<div></div>} />
         </Routes>
       </section>
-      <footer></footer>
     </>
   );
 }

@@ -1,3 +1,5 @@
+const alts = { name: "charizard", color: "greninja", initials: "lucario" };
+
 const SearchRadioButton = ({
   title,
   description,
@@ -22,7 +24,7 @@ const SearchRadioButton = ({
         <small>{description}</small>
       </div>
       <div className="text-center">
-        <img className="w-full" src={img} />
+        <img className="w-full" src={img} alt={alts[value]} />
         <input
           type="radio"
           id={id}

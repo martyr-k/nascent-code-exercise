@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowCircleRightIcon,
   ArrowCircleLeftIcon,
 } from "@heroicons/react/solid";
 
-const PaginatedList = ({ list, limit }) => {
+import { ListItem } from "./index";
+
+const PaginatedList = ({
+  list,
+  limit,
+  selectPokemonColor,
+  selectedPokemon,
+}) => {
   const [page, setPage] = useState(0);
   const lastPage = Math.ceil(list.length / limit) - 1;
+
+  useEffect(() => {
+    setPage(0);
+  }, [list]);
 
   const handleClickL = () => {
     setPage((page) => page - 1);
@@ -14,6 +25,10 @@ const PaginatedList = ({ list, limit }) => {
 
   const handleClickR = () => {
     setPage((page) => page + 1);
+  };
+
+  const handlePokemonClick = (pokemon) => {
+    selectPokemonColor(pokemon);
   };
 
   return (
@@ -29,12 +44,12 @@ const PaginatedList = ({ list, limit }) => {
         </button>
         <div className="flex gap-3 flex-wrap mt-3">
           {list.slice(page * limit, page * limit + limit).map((item) => (
-            <span
-              className="capitalize bg-blue-50 p-2 rounded-md cursor-pointer"
+            <ListItem
               key={item.name}
-            >
-              {item.name}
-            </span>
+              name={item.name}
+              handlePokemonClick={handlePokemonClick}
+              selectedPokemon={selectedPokemon}
+            />
           ))}
         </div>
         <button

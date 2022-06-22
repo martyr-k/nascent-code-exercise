@@ -16,9 +16,9 @@ const PokemonForm = () => {
   const [error, setError] = useState("");
   const [submtting, setSubmtting] = useState(false);
   const [pokemon, setPokemon] = useState("");
+  const [pokemonColor, setPokemonColor] = useState("");
   const [pokemonList, setPokemonList] = useState([]);
   const [color, setColor] = useState("");
-  const [isLoading, setIsLoading] = useState(true); // use tailwind skeleton layout
 
   useEffect(() => {
     if (method === "color" && color) {
@@ -49,6 +49,16 @@ const PokemonForm = () => {
     setError("");
   };
 
+  const selectPokemonColor = (pokemon) => {
+    setPokemonColor(pokemon);
+  };
+
+  const isSubmitDisabled = () => {
+    return (
+      (!pokemon && method === "name") || (!pokemonColor && method === "color")
+    );
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmtting(true);
@@ -56,12 +66,13 @@ const PokemonForm = () => {
     switch (method) {
       case "name":
         try {
-          const response = await axios.get(
+          await axios.get(
             `https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`
           );
-          console.log("Success!");
           // ok for now
+          console.log(pokemon);
           setSubmtting(false);
+          // submit pokemon via app component
         } catch (error) {
           setSubmtting(false);
           if (error.response.status === 404) {
@@ -72,11 +83,15 @@ const PokemonForm = () => {
         }
         break;
       case "color":
+        console.log(pokemonColor);
+        setSubmtting(false);
+        // submit pokemon via app component
         break;
       case "initials":
         break;
       default:
         setError("no-search");
+        setSubmtting(false);
         break;
     }
   };
@@ -167,13 +182,21 @@ const PokemonForm = () => {
               })}
             </SelectInput>
             {pokemonList.length > 0 && (
-              <PaginatedList list={pokemonList} limit={20} />
+              <PaginatedList
+                list={pokemonList}
+                limit={20}
+                selectedPokemon={pokemonColor}
+                selectPokemonColor={selectPokemonColor}
+              />
             )}
           </div>
         )}
         <button
           type="submit"
-          className="px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ml-auto"
+          className={`px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ml-auto ${
+            isSubmitDisabled() && "opacity-30"
+          }`}
+          disabled={isSubmitDisabled()}
         >
           {submtting ? (
             "Submitting..."
