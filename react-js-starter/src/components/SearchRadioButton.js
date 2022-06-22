@@ -4,7 +4,7 @@ const SearchRadioButton = ({
   id,
   name,
   value,
-  searchMethod,
+  method,
   handleChange,
   img,
   error,
@@ -13,7 +13,7 @@ const SearchRadioButton = ({
     <label
       className={`flex flex-col items-center justify-between font-light border p-3 rounded-lg shadow-sm cursor-pointer${
         error === "no-search" ? " border-red-500" : ""
-      } hover:bg-blue-50${value === searchMethod ? " bg-blue-50" : ""}`}
+      } hover:bg-blue-50${value === method ? " bg-blue-50" : ""}`}
     >
       <div className="text-center">
         <h2 className="mb-1 underline decoration-sky-500 decoration-wavy underline-offset-2">
@@ -28,7 +28,7 @@ const SearchRadioButton = ({
           id={id}
           name={name}
           value={value}
-          checked={value === searchMethod}
+          checked={value === method}
           onChange={handleChange}
         />
       </div>

@@ -52,3 +52,16 @@ export const provinces = [
     abbreviation: "YT",
   },
 ];
+
+export const pokemonColors = [
+  "Black",
+  "Blue",
+  "Brown",
+  "Gray",
+  "Green",
+  "Pink",
+  "Purple",
+  "Red",
+  "White",
+  "Yellow",
+];
