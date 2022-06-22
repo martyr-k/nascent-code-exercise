@@ -16,7 +16,7 @@ const PokemonForm = () => {
   const [error, setError] = useState("");
   const [submtting, setSubmtting] = useState(false);
   const [pokemon, setPokemon] = useState("");
-  const [pokemonColor, setPokemonColor] = useState("");
+  const [pokemonByColor, setPokemonByColor] = useState("");
   const [pokemonList, setPokemonList] = useState([]);
   const [color, setColor] = useState("");
 
@@ -49,13 +49,13 @@ const PokemonForm = () => {
     setError("");
   };
 
-  const selectPokemonColor = (pokemon) => {
-    setPokemonColor(pokemon);
+  const selectPokemonByColor = (pokemon) => {
+    setPokemonByColor(pokemon);
   };
 
   const isSubmitDisabled = () => {
     return (
-      (!pokemon && method === "name") || (!pokemonColor && method === "color")
+      (!pokemon && method === "name") || (!pokemonByColor && method === "color")
     );
   };
 
@@ -83,7 +83,7 @@ const PokemonForm = () => {
         }
         break;
       case "color":
-        console.log(pokemonColor);
+        console.log(pokemonByColor);
         setSubmtting(false);
         // submit pokemon via app component
         break;
@@ -185,8 +185,8 @@ const PokemonForm = () => {
               <PaginatedList
                 list={pokemonList}
                 limit={20}
-                selectedPokemon={pokemonColor}
-                selectPokemonColor={selectPokemonColor}
+                selectedPokemon={pokemonByColor}
+                selectPokemonByColor={selectPokemonByColor}
               />
             )}
           </div>

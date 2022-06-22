@@ -9,7 +9,7 @@ import { ListItem } from "./index";
 const PaginatedList = ({
   list,
   limit,
-  selectPokemonColor,
+  selectPokemonByColor,
   selectedPokemon,
 }) => {
   const [page, setPage] = useState(0);
@@ -28,7 +28,7 @@ const PaginatedList = ({
   };
 
   const handlePokemonClick = (pokemon) => {
-    selectPokemonColor(pokemon);
+    selectPokemonByColor(pokemon);
   };
 
   return (
