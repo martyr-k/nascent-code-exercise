@@ -110,7 +110,7 @@ const WelcomeForm = () => {
             errorLabel="street address"
           />
         </div>
-        <div className="App-location mb-5">
+        <div className="App-location mb-4">
           <div>
             <FormLabel htmlFor="city">City:</FormLabel>
             <TextInput

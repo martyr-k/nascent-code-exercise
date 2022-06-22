@@ -4,6 +4,7 @@ import FormLabel from "./FormLabel";
 import WelcomeForm from "./WelcomeForm";
 import SelectInput from "./SelectInput";
 import PokemonForm from "./PokemonForm";
+import SearchRadioButton from "./SearchRadioButton";
 
 export {
   NavNumber,
@@ -12,4 +13,5 @@ export {
   WelcomeForm,
   SelectInput,
   PokemonForm,
+  SearchRadioButton,
 };

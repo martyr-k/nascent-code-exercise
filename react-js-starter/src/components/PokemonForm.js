@@ -1,165 +1,137 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { ArrowCircleRightIcon } from "@heroicons/react/solid";
-import { assert } from "superstruct";
-import { WelcomeStruct } from "../util/structs";
 
-import { TextInput, FormLabel, SelectInput } from "./index";
-import { provinces } from "../util/const";
+import { TextInput, FormLabel, SelectInput, SearchRadioButton } from "./index";
 
 const PokemonForm = () => {
-  const [formState, setFormState] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    address: "",
-    city: "",
-    postalCode: "",
-    province: "Alberta",
-  }); // or localstorage
-  const [errorState, setErrorState] = useState({
-    firstName: false,
-    lastName: false,
-    phone: false,
-    address: false,
-    city: false,
-    postalCode: false,
-    province: false,
-  });
+  const [searchMethod, setSearchMethod] = useState("");
+  const [error, setError] = useState("");
+  const [pokemonName, setPokemonName] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // use tailwind skeleton layout
 
-  const handleChange = (event) => {
-    const updatedFormState = {
-      ...formState,
-      [event.target.name]: event.target.value,
-    };
-    setFormState(updatedFormState);
+  const handleSearchMethodChange = (event) => {
+    setSearchMethod(event.target.value);
+    setError("");
   };
 
-  const handleSubmit = (event) => {
+  const handlePokemonNameChange = (event) => {
+    setPokemonName(event.target.value);
+    setError("");
+  };
+
+  // useEffect(() => {
+  //   (async () => {
+  // try {
+  //     const response = await axios.get(
+  //       "https://pokeapi.co/api/v2/type?limit=18"
+  //     );
+  //     setTypes(response.data.results);
+  //} catch (e) {
+  // alert("Something went wrong, please try again later.")
+  //}
+  //   })();
+  // }, []);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      assert(formState, WelcomeStruct);
-    } catch (error) {
-      const formErrors = {};
-      for (const failure of error.failures()) {
-        formErrors[failure.path] = true;
-        setErrorState(formErrors);
-      }
+    switch (searchMethod) {
+      case "name":
+        try {
+          const response = await axios.get(
+            `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+          );
+          console.log("Success!");
+        } catch (error) {
+          if (error.response.status === 404) {
+            setError("invalid-name");
+          } else {
+            alert("Something went wrong, please try again later.");
+          }
+        }
+        break;
+      case "color":
+        break;
+      case "initials":
+        break;
+      default:
+        setError("no-search");
+        break;
     }
-
-    // - go to next page
   };
 
   return (
     <>
-      <p className="text-white mb-3 text-lg">
-        Next, choose your Pokèmon match!
-      </p>
-      {/* add options for searching and explain each */}
+      <p className="text-white mb-3 text-lg">Next, find your Pokèmon match!</p>
       <form
         className="w-full bg-zinc-50 rounded-md p-4 text-gray-600 shadow"
         onSubmit={handleSubmit}
       >
-        <p className="mb-3 font-light">All fields are required.</p>
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          <div>
-            <FormLabel htmlFor="firstName">First Name:</FormLabel>
-            <TextInput
-              type="text"
-              id="firstName"
-              name="firstName"
-              onChange={handleChange}
-              value={formState.firstName}
-              error={errorState.firstName}
-              errorLabel="first name"
-            />
-          </div>
-          <div>
-            <FormLabel htmlFor="lastName">Last Name:</FormLabel>
-            <TextInput
-              type="text"
-              id="lastName"
-              name="lastName"
-              onChange={handleChange}
-              value={formState.lastName}
-              error={errorState.lastName}
-              errorLabel="last name"
-            />
-          </div>
-        </div>
-        <div className="mb-3">
-          <FormLabel htmlFor="phone">Phone Number:</FormLabel>
-          <TextInput
-            type="text"
-            id="phone"
-            name="phone"
-            onChange={handleChange}
-            value={formState.phone}
-            error={errorState.phone}
-            errorLabel="phone number"
+        <p className="mb-4 font-light">
+          We have a few options to help you choose your preferred Pokèmon:
+        </p>
+        <div className="mb-3 grid sm:grid-cols-3 gap-3">
+          <SearchRadioButton
+            title="Name"
+            description="If you already know your Pokèmon match!"
+            value="name"
+            id="name"
+            name="searchMethod"
+            searchMethod={searchMethod}
+            handleChange={handleSearchMethodChange}
+            img="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
+            error={error}
+          />
+          <SearchRadioButton
+            title="Color"
+            description="Select a color and we'll present a list of Pokèmon matching that color!"
+            value="type"
+            id="type"
+            name="searchMethod"
+            searchMethod={searchMethod}
+            handleChange={handleSearchMethodChange}
+            img="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/658.png"
+            error={error}
+          />
+          <SearchRadioButton
+            title="Initials"
+            description="Enter your first and last intials and we'll try to find a Pokèmon with those letters in its name."
+            value="initials"
+            id="initials"
+            name="searchMethod"
+            searchMethod={searchMethod}
+            handleChange={handleSearchMethodChange}
+            img="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/448.png"
+            error={error}
           />
         </div>
-        <div className="mb-3">
-          <FormLabel htmlFor="address">Street Address:</FormLabel>
-          <TextInput
-            type="text"
-            id="address"
-            name="address"
-            onChange={handleChange}
-            value={formState.address}
-            error={errorState.address}
-            errorLabel="street address"
-          />
-        </div>
-        <div className="App-location mb-5">
-          <div>
-            <FormLabel htmlFor="city">City:</FormLabel>
+        {error === "no-search" && (
+          <p className="text-xs text-red-500">Please select a search method.</p>
+        )}
+        {searchMethod === "name" && (
+          <div className="mb-4">
+            <FormLabel>Pokèmon Name:</FormLabel>
             <TextInput
               type="text"
-              id="city"
-              name="city"
-              onChange={handleChange}
-              value={formState.city}
-              error={errorState.city}
-              errorLabel="city"
+              placeholder="Charizard"
+              error={error === "invalid-name"}
+              onChange={handlePokemonNameChange}
+              value={pokemonName}
+              required
             />
+            {error === "invalid-name" && (
+              <p className="text-xs text-red-500 mt-1">
+                Please enter a valid Pokèmon name.
+              </p>
+            )}
           </div>
-          <div>
-            <FormLabel htmlFor="province">Province:</FormLabel>
-            <SelectInput
-              type="text"
-              id="province"
-              name="province"
-              onChange={handleChange}
-              value={formState.province}
-            >
-              {provinces.map((province) => {
-                return (
-                  <option key={province.name} value={province.name}>
-                    {province.abbreviation}
-                  </option>
-                );
-              })}
-            </SelectInput>
-          </div>
-          <div>
-            <FormLabel htmlFor="postalCode">Postal Code:</FormLabel>
-            <TextInput
-              type="text"
-              id="postalCode"
-              name="postalCode"
-              onChange={handleChange}
-              value={formState.postalCode}
-              error={errorState.postalCode}
-              errorLabel="postal code"
-            />
-          </div>
-        </div>
+        )}
         <button
           type="submit"
           className="px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ml-auto"
         >
-          Choose a Pokèmon
+          Review
           <ArrowCircleRightIcon className="h-6 ml-2" />
         </button>
       </form>

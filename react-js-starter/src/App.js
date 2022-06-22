@@ -16,12 +16,12 @@ function App() {
       <section className="mt-10 max-w-xl mx-auto">
         <div className="flex justify-between mb-5">
           <NavNumber value={1} path="/" />
-          <NavNumber value={2} path="/choose-pokemon" />
+          <NavNumber value={2} path="/partner" />
           <NavNumber value={3} path="review" />
         </div>
         <Routes>
           <Route path="/" element={<WelcomeForm />} />
-          <Route path="/choose-pokemon" element={<PokemonForm />} />
+          <Route path="/partner" element={<PokemonForm />} />
           <Route path="/review" element={<div></div>} />
         </Routes>
       </section>
