@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ArrowCircleRightIcon } from "@heroicons/react/solid";
 
-import { TextInput, FormLabel, SelectInput, SearchRadioButton } from "./index";
+import {
+  TextInput,
+  FormLabel,
+  SelectInput,
+  SearchRadioButton,
+  PaginatedList,
+} from "./index";
 import { pokemonColors } from "../util/const";
 
 const PokemonForm = () => {
@@ -161,16 +167,7 @@ const PokemonForm = () => {
               })}
             </SelectInput>
             {pokemonList.length > 0 && (
-              <div className="flex gap-2 flex-wrap mt-3">
-                {pokemonList.map((pokemon) => (
-                  <span
-                    className="capitalize bg-white p-2 rounded-md"
-                    key={pokemon.name}
-                  >
-                    {pokemon.name}
-                  </span>
-                ))}
-              </div>
+              <PaginatedList list={pokemonList} limit={20} />
             )}
           </div>
         )}

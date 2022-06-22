@@ -5,6 +5,7 @@ import WelcomeForm from "./WelcomeForm";
 import SelectInput from "./SelectInput";
 import PokemonForm from "./PokemonForm";
 import SearchRadioButton from "./SearchRadioButton";
+import PaginatedList from "./PaginatedList";
 
 export {
   NavNumber,
@@ -14,4 +15,5 @@ export {
   SelectInput,
   PokemonForm,
   SearchRadioButton,
+  PaginatedList,
 };
