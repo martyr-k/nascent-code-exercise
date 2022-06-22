@@ -10,7 +10,7 @@ const PokemonForm = () => {
   const [error, setError] = useState("");
   const [submtting, setSubmtting] = useState(false);
   const [pokemon, setPokemon] = useState("");
-  const [pokemonList, setPokemonList] = useState("");
+  const [pokemonList, setPokemonList] = useState([]);
   const [color, setColor] = useState("");
   const [isLoading, setIsLoading] = useState(true); // use tailwind skeleton layout
 
@@ -160,6 +160,18 @@ const PokemonForm = () => {
                 );
               })}
             </SelectInput>
+            {pokemonList.length > 0 && (
+              <div className="flex gap-2 flex-wrap mt-3">
+                {pokemonList.map((pokemon) => (
+                  <span
+                    className="capitalize bg-white p-2 rounded-md"
+                    key={pokemon.name}
+                  >
+                    {pokemon.name}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         )}
         <button
