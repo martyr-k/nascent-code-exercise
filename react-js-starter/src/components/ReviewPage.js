@@ -57,7 +57,10 @@ const ReviewPage = ({ appData, clear }) => {
               Address: {address}, {city} {province}, {postalCode}
             </p>
           </div>
-          <Link className="text-emerald-500 self-start" to="/">
+          <Link
+            className="text-emerald-700 font-normal self-start shrink-0"
+            to="/"
+          >
             <span className="align-middle">Edit</span>{" "}
             <PencilAltIcon className="h-6 inline-block" />
           </Link>
@@ -71,12 +74,16 @@ const ReviewPage = ({ appData, clear }) => {
               {parsePokemonName(pokemonName)}
             </h3>
             {pokemonSprite ? (
-              <img className="mx-auto" src={pokemonSprite} alt={pokemonName} />
+              <img
+                className="mx-auto h-24 aspect-square"
+                src={pokemonSprite}
+                alt={pokemonName}
+              />
             ) : (
               <div className="h-24 w-24 bg-slate-200 animate-pulse mx-auto mt-3 rounded-full"></div>
             )}
           </div>
-          <Link className="text-emerald-500 self-start" to="/partner">
+          <Link className="text-emerald-700 self-start shrink-0" to="/partner">
             <span className="align-middle">Edit</span>{" "}
             <PencilAltIcon className="h-6 inline-block" />
           </Link>

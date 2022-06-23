@@ -24,7 +24,7 @@ const SearchRadioButton = ({
         <small>{description}</small>
       </div>
       <div className="text-center">
-        <img className="w-full" src={img} alt={alts[value]} />
+        <img className="w-full aspect-square" src={img} alt={alts[value]} />
         <input
           type="radio"
           id={id}
