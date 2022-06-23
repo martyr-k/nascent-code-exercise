@@ -5,6 +5,7 @@ import {
   ArrowCircleLeftIcon,
 } from "@heroicons/react/solid";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
   TextInput,
@@ -40,7 +41,7 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
           );
           setPokemonList(response.data["pokemon_species"]);
         } catch (e) {
-          alert("Something went wrong, please try again later.");
+          toast.error("Something went wrong, please try again later.");
         }
       })();
     }
@@ -103,7 +104,7 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
           if (error.response.status === 404) {
             setError("invalid-name");
           } else {
-            alert("Something went wrong, please try again later.");
+            toast.error("Something went wrong, please try again later.");
           }
         }
         break;
@@ -138,7 +139,7 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
           } catch (error) {
             console.log(error);
             setSubmtting(false);
-            alert("Something went wrong, please try again later.");
+            toast.error("Something went wrong, please try again later.");
           }
         } else {
           setError("invalid-initials");

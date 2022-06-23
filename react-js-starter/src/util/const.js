@@ -65,3 +65,13 @@ export const pokemonColors = [
   "White",
   "Yellow",
 ];
+
+export const defaultAppState = {
+  welcome: {},
+  pokemon: {
+    method: null,
+    pokemonName: null,
+    color: null,
+    initials: null,
+  },
+};

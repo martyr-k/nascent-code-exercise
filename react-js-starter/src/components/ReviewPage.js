@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { PencilAltIcon } from "@heroicons/react/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { parsePokemonName } from "../util/helpers";
 
-const ReviewPage = ({ appData }) => {
+const ReviewPage = ({ appData, clear }) => {
   const { pokemonName } = appData.pokemon;
   const { firstName, lastName, phone, address, city, province, postalCode } =
     appData.welcome;
   const [pokemonSprite, setPokemonSprite] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -19,10 +21,21 @@ const ReviewPage = ({ appData }) => {
         );
         setPokemonSprite(response.data.sprites["front_default"]);
       } catch (e) {
-        alert("Something went wrong, please try again later.");
+        toast.error("Something went wrong, please try again later.");
       }
     })();
   }, [pokemonName]);
+
+  const handleSubmit = () => {
+    try {
+      // POST to api of some sort
+      toast.success("Submission saved successfully!");
+      clear();
+      navigate("/", { replace: true });
+    } catch (error) {
+      toast.error("Something went wrong, please try again later.");
+    }
+  };
 
   return (
     <>
@@ -44,7 +57,7 @@ const ReviewPage = ({ appData }) => {
               Address: {address}, {city} {province}, {postalCode}
             </p>
           </div>
-          <Link className="text-emerald-500" to="/">
+          <Link className="text-emerald-500 self-start" to="/">
             <span className="align-middle">Edit</span>{" "}
             <PencilAltIcon className="h-6 inline-block" />
           </Link>
@@ -63,13 +76,14 @@ const ReviewPage = ({ appData }) => {
               <div className="h-24 w-24 bg-slate-200 animate-pulse mx-auto mt-3 rounded-full"></div>
             )}
           </div>
-          <Link className="text-emerald-500" to="/partner">
+          <Link className="text-emerald-500 self-start" to="/partner">
             <span className="align-middle">Edit</span>{" "}
             <PencilAltIcon className="h-6 inline-block" />
           </Link>
         </article>
         <button
           type="button"
+          onClick={handleSubmit}
           className="px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ml-auto"
         >
           Submit

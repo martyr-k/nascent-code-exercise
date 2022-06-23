@@ -1,24 +1,19 @@
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import { NavNumber, WelcomeForm, PokemonForm, ReviewPage } from "./components";
+import { defaultAppState } from "./util/const";
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/App.css";
 
 function App() {
   const [appState, setAppState] = useState(
-    JSON.parse(localStorage.getItem("appState")) || {
-      welcome: {},
-      pokemon: {
-        method: null,
-        pokemonName: null,
-        color: null,
-        initials: null,
-      },
-    }
+    JSON.parse(localStorage.getItem("globalData")) || defaultAppState
   );
 
   useEffect(() => {
-    localStorage.setItem("appState", JSON.stringify(appState));
+    localStorage.setItem("globalData", JSON.stringify(appState));
   }, [appState]);
 
   const save = (type, data) => {
@@ -26,8 +21,14 @@ function App() {
     setAppState(newAppState);
   };
 
+  const clear = () => {
+    setAppState(defaultAppState);
+    localStorage.clear("globalData");
+  };
+
   return (
     <>
+      <ToastContainer hideProgressBar newestOnTop />
       <header className="text-white text-center">
         <h1 className="font-bold text-7xl sm:text-8xl">Pokè Partner</h1>
         <p className="mt-3 text-xl sm:w-1/2 mx-auto">
@@ -64,7 +65,10 @@ function App() {
               />
             }
           />
-          <Route path="/review" element={<ReviewPage appData={appState} />} />
+          <Route
+            path="/review"
+            element={<ReviewPage appData={appState} clear={clear} />}
+          />
         </Routes>
       </section>
     </>
