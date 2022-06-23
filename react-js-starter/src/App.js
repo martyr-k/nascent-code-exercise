@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { NavNumber, WelcomeForm, PokemonForm, ReviewPage } from "./components";
 import "./styles/App.css";
 
 function App() {
-  const [appState, setAppState] = useState({
-    welcome: {},
-    pokemon: {
-      method: null,
-      pokemonName: null,
-      color: null,
-      initials: null,
-    },
-  });
+  const [appState, setAppState] = useState(
+    JSON.parse(localStorage.getItem("appState")) || {
+      welcome: {},
+      pokemon: {
+        method: null,
+        pokemonName: null,
+        color: null,
+        initials: null,
+      },
+    }
+  );
+
+  useEffect(() => {
+    localStorage.setItem("appState", JSON.stringify(appState));
+  }, [appState]);
 
   const save = (type, data) => {
     const newAppState = { ...appState, [type]: data };

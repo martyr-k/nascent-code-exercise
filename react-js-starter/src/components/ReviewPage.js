@@ -69,7 +69,7 @@ const ReviewPage = ({ appData }) => {
           </Link>
         </article>
         <button
-          type="submit"
+          type="button"
           className="px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ml-auto"
         >
           Submit
