@@ -7,7 +7,7 @@ const renderErrorText = (error, field, name) => {
   if (error && field) {
     return (
       <p className="text-xs text-red-500 mt-1">
-        {name === "postalCode"
+        {name === "postalCode" || name === "phone"
           ? `A valid ${field} is required.`
           : `A${isVowel(field) ? "n" : ""} ${field} is required.`}
       </p>

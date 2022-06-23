@@ -36,6 +36,10 @@ const WelcomeForm = ({ welcomeData, save }) => {
     setFormState(updatedFormState);
   };
 
+  const handleWheel = (event) => {
+    event.target.blur();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -92,13 +96,14 @@ const WelcomeForm = ({ welcomeData, save }) => {
         <div className="mb-3">
           <FormLabel htmlFor="phone">Phone Number:</FormLabel>
           <TextInput
-            type="text"
+            type="number"
             id="phone"
             name="phone"
             onChange={handleChange}
             value={formState.phone}
             error={errorState.phone}
             errorLabel="phone number"
+            onWheel={handleWheel}
           />
         </div>
         <div className="mb-3">
