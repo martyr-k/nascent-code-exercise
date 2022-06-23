@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ArrowCircleRightIcon } from "@heroicons/react/solid";
-import { useNavigate } from "react-router-dom";
+import {
+  ArrowCircleRightIcon,
+  ArrowCircleLeftIcon,
+} from "@heroicons/react/solid";
+import { useNavigate, Link } from "react-router-dom";
 
 import {
   TextInput,
@@ -13,7 +16,7 @@ import {
 import { pokemonColors } from "../util/const";
 import { getMagicNumber, parsePokemonName } from "../util/helpers";
 
-const PokemonForm = ({ pokemonData, save }) => {
+const PokemonForm = ({ pokemonData, save, firstName }) => {
   const [method, setMethod] = useState(pokemonData.method || "");
   const [error, setError] = useState("");
   const [submtting, setSubmtting] = useState(false);
@@ -56,7 +59,7 @@ const PokemonForm = ({ pokemonData, save }) => {
 
   // - make into hook!
   const handlePokemonChange = (event) => {
-    setPokemon(event.target.value);
+    setPokemon(event.target.value.split(" ").join("-"));
     setError("");
   };
 
@@ -89,7 +92,10 @@ const PokemonForm = ({ pokemonData, save }) => {
             `https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`
           );
 
-          save("pokemon", { method: "name", pokemonName: pokemon });
+          save("pokemon", {
+            method: "name",
+            pokemonName: pokemon.toLowerCase(),
+          });
           setSubmtting(false);
           navigate("/review");
         } catch (error) {
@@ -117,13 +123,14 @@ const PokemonForm = ({ pokemonData, save }) => {
             const response = await axios.get(
               `https://pokeapi.co/api/v2/pokemon/${getMagicNumber(
                 initialOne,
-                initialTwo
+                initialTwo,
+                firstName
               )}`
             );
 
             save("pokemon", {
               method: "initials",
-              pokemonName: parsePokemonName(response.data.name),
+              pokemonName: response.data.name,
               initials,
             });
             setSubmtting(false);
@@ -180,7 +187,7 @@ const PokemonForm = ({ pokemonData, save }) => {
           />
           <SearchRadioButton
             title="Initials"
-            description="Enter your first and last intials and we'll find a Pokèmon using our magic algorithm!"
+            description="Enter a set of first and last intials and we'll find a Pokèmon using our magic algorithm!"
             value="initials"
             id="initials"
             name="searchMethod"
@@ -191,7 +198,9 @@ const PokemonForm = ({ pokemonData, save }) => {
           />
         </div>
         {error === "no-search" && (
-          <p className="text-xs text-red-500">Please select a search method.</p>
+          <p className="text-xs text-red-500 mb-3">
+            Please select a search method.
+          </p>
         )}
         {method === "name" && (
           <div className="mb-4">
@@ -260,29 +269,40 @@ const PokemonForm = ({ pokemonData, save }) => {
               </p>
             )}
             {pokemonData.method === "initials" && pokemonData.pokemonName && (
-              <p className="mt-1 font-light">
+              <p className="mt-1 font-light text-emerald-500">
                 Current Match:{" "}
-                <span className="capitalize">{pokemonData.pokemonName}</span>
+                <span className="capitalize">
+                  {parsePokemonName(pokemonData.pokemonName)}
+                </span>
               </p>
             )}
           </div>
         )}
-        <button
-          type="submit"
-          className={`px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ml-auto ${
-            isSubmitDisabled() && "opacity-30"
-          }`}
-          disabled={isSubmitDisabled()}
-        >
-          {submtting ? (
-            "Submitting..."
-          ) : (
-            <>
-              Review
-              <ArrowCircleRightIcon className="h-6 ml-2" />
-            </>
-          )}
-        </button>
+        <div className="flex justify-between">
+          <Link
+            className="px-3 py-2 rounded font-semibold bg-red-600 text-white hover:bg-red-800 transition-colors flex"
+            to=".."
+          >
+            <ArrowCircleLeftIcon className="h-6 mr-2" />
+            Back
+          </Link>
+          <button
+            type="submit"
+            className={`px-3 py-2 rounded font-semibold bg-violet-800 text-white hover:bg-violet-900 transition-colors flex ${
+              isSubmitDisabled() && "opacity-30"
+            }`}
+            disabled={isSubmitDisabled()}
+          >
+            {submtting ? (
+              "Submitting..."
+            ) : (
+              <>
+                Review
+                <ArrowCircleRightIcon className="h-6 ml-2" />
+              </>
+            )}
+          </button>
+        </div>
       </form>
     </>
   );

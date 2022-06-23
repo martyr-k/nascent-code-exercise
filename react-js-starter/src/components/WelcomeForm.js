@@ -41,6 +41,9 @@ const WelcomeForm = ({ welcomeData, save }) => {
 
     try {
       assert(formState, WelcomeStruct);
+
+      save("welcome", formState);
+      navigate("/partner");
     } catch (error) {
       const formErrors = {};
       for (const failure of error.failures()) {
@@ -48,9 +51,6 @@ const WelcomeForm = ({ welcomeData, save }) => {
         setErrorState(formErrors);
       }
     }
-
-    save("welcome", formState);
-    navigate("/partner");
   };
 
   return (

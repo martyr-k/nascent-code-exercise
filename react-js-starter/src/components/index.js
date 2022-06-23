@@ -7,6 +7,7 @@ import PokemonForm from "./PokemonForm";
 import SearchRadioButton from "./SearchRadioButton";
 import PaginatedList from "./PaginatedList";
 import ListItem from "./ListItem";
+import ReviewPage from "./ReviewPage";
 
 export {
   NavNumber,
@@ -18,4 +19,5 @@ export {
   SearchRadioButton,
   PaginatedList,
   ListItem,
+  ReviewPage,
 };

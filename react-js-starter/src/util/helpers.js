@@ -1,16 +1,8 @@
-const getRandNumber = () => Math.round(10 * Math.random() + 1);
-
-export const getMagicNumber = (initialOne, initialTwo) => {
+export const getMagicNumber = (initialOne, initialTwo, firstName) => {
   const product = initialOne.charCodeAt() * initialTwo.charCodeAt();
 
   // 898 unique pokemon
-  let code = (product * getRandNumber()) % 898;
-
-  while (code === 0) {
-    code = (product * getRandNumber()) % 898;
-  }
-
-  return code;
+  return ((product * firstName.length) % 898) + 1;
 };
 
 export const parsePokemonName = (name) => {

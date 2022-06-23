@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { NavNumber, WelcomeForm, PokemonForm } from "./components";
+import { NavNumber, WelcomeForm, PokemonForm, ReviewPage } from "./components";
 import "./styles/App.css";
 
 function App() {
@@ -50,19 +50,15 @@ function App() {
           />
           <Route
             path="/partner"
-            element={<PokemonForm pokemonData={appState.pokemon} save={save} />}
-          />
-          <Route
-            path="/review"
             element={
-              <div>
-                Review your responses. You can go back at any time to make
-                changes. When you are satsified, click on the submit button
-                below.
-                {/* add back button for each page? */}
-              </div>
+              <PokemonForm
+                pokemonData={appState.pokemon}
+                save={save}
+                firstName={appState.welcome.firstName}
+              />
             }
           />
+          <Route path="/review" element={<ReviewPage appData={appState} />} />
         </Routes>
       </section>
     </>
