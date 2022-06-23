@@ -165,7 +165,7 @@ const PokemonForm = () => {
           />
           <SearchRadioButton
             title="Initials"
-            description="Enter your first and last intials and we'll find a Pokèmon using our magic algorithm."
+            description="Enter your first and last intials and we'll find a Pokèmon using our magic algorithm!"
             value="initials"
             id="initials"
             name="searchMethod"

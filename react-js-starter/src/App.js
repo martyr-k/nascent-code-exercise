@@ -25,7 +25,17 @@ function App() {
         <Routes>
           <Route path="/" element={<WelcomeForm />} />
           <Route path="/partner" element={<PokemonForm />} />
-          <Route path="/review" element={<div></div>} />
+          <Route
+            path="/review"
+            element={
+              <div>
+                Review your responses. You can go back at any time to make
+                changes. When you are satsified, click on the submit button
+                below.
+                {/* add back button for each page? */}
+              </div>
+            }
+          />
         </Routes>
       </section>
     </>
