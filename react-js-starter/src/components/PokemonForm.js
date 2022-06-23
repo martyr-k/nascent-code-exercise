@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ArrowCircleRightIcon } from "@heroicons/react/solid";
+import { useNavigate } from "react-router-dom";
 
 import {
   TextInput,
@@ -12,15 +13,20 @@ import {
 import { pokemonColors } from "../util/const";
 import { getMagicNumber, parsePokemonName } from "../util/helpers";
 
-const PokemonForm = () => {
-  const [method, setMethod] = useState("");
+const PokemonForm = ({ pokemonData, save }) => {
+  const [method, setMethod] = useState(pokemonData.method || "");
   const [error, setError] = useState("");
   const [submtting, setSubmtting] = useState(false);
-  const [pokemon, setPokemon] = useState("");
-  const [pokemonByColor, setPokemonByColor] = useState("");
+  const [pokemon, setPokemon] = useState(
+    (pokemonData.method === "name" && pokemonData.pokemonName) || ""
+  );
+  const [pokemonByColor, setPokemonByColor] = useState(
+    (pokemonData.method === "color" && pokemonData.pokemonName) || ""
+  );
   const [pokemonList, setPokemonList] = useState([]);
-  const [color, setColor] = useState("");
-  const [initials, setInitials] = useState("");
+  const [color, setColor] = useState(pokemonData.color || "");
+  const [initials, setInitials] = useState(pokemonData.initials || "");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (method === "color" && color) {
@@ -82,10 +88,10 @@ const PokemonForm = () => {
           await axios.get(
             `https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`
           );
-          // ok for now
-          console.log(pokemon);
+
+          save("pokemon", { method: "name", pokemonName: pokemon });
           setSubmtting(false);
-          // submit pokemon via app component
+          navigate("/review");
         } catch (error) {
           setSubmtting(false);
           if (error.response.status === 404) {
@@ -96,9 +102,13 @@ const PokemonForm = () => {
         }
         break;
       case "color":
-        console.log(pokemonByColor);
+        save("pokemon", {
+          method: "color",
+          pokemonName: pokemonByColor,
+          color,
+        });
         setSubmtting(false);
-        // submit pokemon via app component
+        navigate("/review");
         break;
       case "initials":
         const [initialOne, initialTwo] = initials.toLowerCase();
@@ -110,9 +120,14 @@ const PokemonForm = () => {
                 initialTwo
               )}`
             );
-            console.log(response.data.name);
-            console.log(parsePokemonName(response.data.name));
-            // submit pokemon via app component
+
+            save("pokemon", {
+              method: "initials",
+              pokemonName: parsePokemonName(response.data.name),
+              initials,
+            });
+            setSubmtting(false);
+            navigate("/review");
           } catch (error) {
             console.log(error);
             setSubmtting(false);
@@ -242,6 +257,12 @@ const PokemonForm = () => {
             {error === "invalid-initials" && (
               <p className="text-xs text-red-500 mt-1">
                 Please enter valid initials.
+              </p>
+            )}
+            {pokemonData.method === "initials" && pokemonData.pokemonName && (
+              <p className="mt-1 font-light">
+                Current Match:{" "}
+                <span className="capitalize">{pokemonData.pokemonName}</span>
               </p>
             )}
           </div>

@@ -5,7 +5,20 @@ import { NavNumber, WelcomeForm, PokemonForm } from "./components";
 import "./styles/App.css";
 
 function App() {
-  const [appState, setAppState] = useState({ welcome: null, pokemon: null });
+  const [appState, setAppState] = useState({
+    welcome: {},
+    pokemon: {
+      method: null,
+      pokemonName: null,
+      color: null,
+      initials: null,
+    },
+  });
+
+  const save = (type, data) => {
+    const newAppState = { ...appState, [type]: data };
+    setAppState(newAppState);
+  };
 
   return (
     <>
@@ -19,12 +32,26 @@ function App() {
       <section className="mt-10 max-w-xl mx-auto">
         <div className="flex justify-between mb-5">
           <NavNumber value={1} path="/" />
-          <NavNumber value={2} path="/partner" />
-          <NavNumber value={3} path="review" />
+          <NavNumber
+            value={2}
+            path="/partner"
+            disabled={!appState.welcome.firstName}
+          />
+          <NavNumber
+            value={3}
+            path="review"
+            disabled={!appState.pokemon.pokemonName}
+          />
         </div>
         <Routes>
-          <Route path="/" element={<WelcomeForm />} />
-          <Route path="/partner" element={<PokemonForm />} />
+          <Route
+            path="/"
+            element={<WelcomeForm welcomeData={appState.welcome} save={save} />}
+          />
+          <Route
+            path="/partner"
+            element={<PokemonForm pokemonData={appState.pokemon} save={save} />}
+          />
           <Route
             path="/review"
             element={

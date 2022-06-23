@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { ArrowCircleRightIcon } from "@heroicons/react/solid";
 import { assert } from "superstruct";
-import { WelcomeStruct } from "../util/structs";
+import { useNavigate } from "react-router-dom";
 
+import { WelcomeStruct } from "../util/structs";
 import { TextInput, FormLabel, SelectInput } from "./index";
 import { provinces } from "../util/const";
 
-const WelcomeForm = () => {
+const WelcomeForm = ({ welcomeData, save }) => {
   const [formState, setFormState] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    address: "",
-    city: "",
-    postalCode: "",
-    province: "Alberta",
-  }); // or localstorage
+    firstName: welcomeData.firstName || "",
+    lastName: welcomeData.lastName || "",
+    phone: welcomeData.phone || "",
+    address: welcomeData.address || "",
+    city: welcomeData.city || "",
+    postalCode: welcomeData.postalCode || "",
+    province: welcomeData.province || "Alberta",
+  });
   const [errorState, setErrorState] = useState({
     firstName: false,
     lastName: false,
@@ -25,6 +26,7 @@ const WelcomeForm = () => {
     postalCode: false,
     province: false,
   });
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const updatedFormState = {
@@ -47,7 +49,8 @@ const WelcomeForm = () => {
       }
     }
 
-    // - go to next page
+    save("welcome", formState);
+    navigate("/partner");
   };
 
   return (

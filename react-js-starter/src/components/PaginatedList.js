@@ -5,6 +5,7 @@ import {
 } from "@heroicons/react/solid";
 
 import { ListItem } from "./index";
+import { findPage } from "../util/helpers";
 
 const PaginatedList = ({
   list,
@@ -12,12 +13,12 @@ const PaginatedList = ({
   selectPokemonByColor,
   selectedPokemon,
 }) => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(findPage(list, limit, selectedPokemon));
   const lastPage = Math.ceil(list.length / limit) - 1;
 
   useEffect(() => {
-    setPage(0);
-  }, [list]);
+    setPage(findPage(list, limit, selectedPokemon));
+  }, [list, limit, selectedPokemon]);
 
   const handleClickL = () => {
     setPage((page) => page - 1);
