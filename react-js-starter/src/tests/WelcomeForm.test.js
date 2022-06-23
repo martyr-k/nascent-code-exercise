@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { createMemoryHistory } from "history";
 
 import { WelcomeForm } from "../components/index";
 import App from "../App";
