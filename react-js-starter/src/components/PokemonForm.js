@@ -15,12 +15,12 @@ import {
   PaginatedList,
 } from "./index";
 import { pokemonColors } from "../util/const";
-import { getMagicNumber, parsePokemonName } from "../util/helpers";
+import { handleSearchMethod, parsePokemonName } from "../util/helpers";
 
 const PokemonForm = ({ pokemonData, save, firstName }) => {
   const [method, setMethod] = useState(pokemonData.method || "");
   const [error, setError] = useState("");
-  const [submtting, setSubmtting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [pokemon, setPokemon] = useState(
     (pokemonData.method === "name" && pokemonData.pokemonName) || ""
   );
@@ -84,72 +84,35 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmtting(true);
+    setSubmitting(true);
 
-    switch (method) {
-      case "name":
-        try {
-          await axios.get(
-            `https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`
-          );
+    const [result, error] = await handleSearchMethod({
+      method,
+      pokemon,
+      pokemonByColor,
+      color,
+      initials,
+      firstName,
+    });
 
-          save("pokemon", {
-            method: "name",
-            pokemonName: pokemon.toLowerCase(),
-          });
-          setSubmtting(false);
-          navigate("/review");
-        } catch (error) {
-          setSubmtting(false);
-          if (error.response.status === 404) {
-            setError("invalid-name");
-          } else {
-            toast.error("Something went wrong, please try again later.");
-          }
-        }
-        break;
-      case "color":
-        save("pokemon", {
-          method: "color",
-          pokemonName: pokemonByColor,
-          color,
-        });
-        setSubmtting(false);
-        navigate("/review");
-        break;
-      case "initials":
-        const [initialOne, initialTwo] = initials.toLowerCase();
-        if (initialOne.match(/[a-z]/i) && initialTwo.match(/[a-z]/i)) {
-          try {
-            const response = await axios.get(
-              `https://pokeapi.co/api/v2/pokemon/${getMagicNumber(
-                initialOne,
-                initialTwo,
-                firstName
-              )}`
-            );
+    if (result) {
+      save("pokemon", {
+        method: result.method,
+        pokemonName: result.pokemonName,
+        color: result.color,
+        initials: result.initials,
+      });
 
-            save("pokemon", {
-              method: "initials",
-              pokemonName: response.data.name,
-              initials,
-            });
-            setSubmtting(false);
-            navigate("/review");
-          } catch (error) {
-            console.log(error);
-            setSubmtting(false);
-            toast.error("Something went wrong, please try again later.");
-          }
-        } else {
-          setError("invalid-initials");
-        }
-        setSubmtting(false);
-        break;
-      default:
-        setError("no-search");
-        setSubmtting(false);
-        break;
+      setSubmitting(false);
+      navigate("/review");
+    } else {
+      setSubmitting(false);
+
+      if (typeof error === "string") {
+        setError(error);
+      } else {
+        toast.error("Something went wrong, please try again later.");
+      }
     }
   };
 
@@ -296,7 +259,7 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
             }`}
             disabled={isSubmitDisabled()}
           >
-            {submtting ? (
+            {submitting ? (
               "Submitting..."
             ) : (
               <>

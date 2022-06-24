@@ -15,7 +15,7 @@ describe("PokemonForm", () => {
     expect(paragraphElement).toBeInTheDocument();
   });
 
-  test("validates method input", () => {
+  test("validates method input", async () => {
     render(
       <BrowserRouter>
         <PokemonForm pokemonData={{}} />
@@ -23,8 +23,7 @@ describe("PokemonForm", () => {
     );
 
     fireEvent.click(screen.getByText("Review"));
-    const paragraphElement = screen.getByText("Please select a search method.");
-    expect(paragraphElement).toBeInTheDocument();
+    await screen.findByText("Please select a search method.");
   });
 
   test("validates pokemon name input", async () => {
