@@ -17,7 +17,7 @@ import {
 import { pokemonColors } from "../util/const";
 import { handleSearchMethod, parsePokemonName } from "../util/helpers";
 
-const PokemonForm = ({ pokemonData, save, firstName }) => {
+const PokemonForm = ({ pokemonData, save, firstName, welcomeData }) => {
   const [method, setMethod] = useState(pokemonData.method || "");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -31,6 +31,16 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
   const [color, setColor] = useState(pokemonData.color || "");
   const [initials, setInitials] = useState(pokemonData.initials || "");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!welcomeData.hasOwnProperty("firstName")) {
+      navigate("/");
+      toast.error(
+        "Please enter information about yourself before choosing a Pokèmon.",
+        { toastId: 123 }
+      );
+    }
+  }, [welcomeData, navigate]);
 
   useEffect(() => {
     if (method === "color" && color) {
@@ -66,8 +76,8 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
 
   // - make into hook!
   const handleInitialChange = (event) => {
-    setError("");
     setInitials(event.target.value);
+    setError("");
   };
 
   const selectPokemonByColor = (pokemon) => {
@@ -107,7 +117,6 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
       navigate("/review");
     } else {
       setSubmitting(false);
-
       if (typeof error === "string") {
         setError(error);
       } else {

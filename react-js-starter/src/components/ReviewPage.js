@@ -6,24 +6,44 @@ import { toast } from "react-toastify";
 
 import { parsePokemonName } from "../util/helpers";
 
-const ReviewPage = ({ appData, clear }) => {
-  const { pokemonName } = appData.pokemon;
+const ReviewPage = ({ pokemonData, welcomeData, clear }) => {
+  const { pokemonName } = pokemonData;
   const { firstName, lastName, phone, address, city, province, postalCode } =
-    appData.welcome;
+    welcomeData;
   const [pokemonSprite, setPokemonSprite] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
-        );
-        setPokemonSprite(response.data.sprites["front_default"]);
-      } catch (e) {
-        toast.error("Something went wrong, please try again later.");
-      }
-    })();
+    if (!welcomeData.hasOwnProperty("firstName")) {
+      navigate("/");
+      toast.error(
+        "Please enter information about yourself before reviewing your information.",
+        { toastId: 124 }
+      );
+    } else if (!pokemonName) {
+      navigate("/partner");
+      toast.error(
+        "Please choose your Pokèmon match before reviewing your information.",
+        { toastId: 125 }
+      );
+    }
+  }, [welcomeData, pokemonName, navigate]);
+
+  useEffect(() => {
+    if (pokemonName) {
+      (async () => {
+        try {
+          const response = await axios.get(
+            `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+          );
+          setPokemonSprite(response.data.sprites["front_default"]);
+        } catch (e) {
+          toast.error("Something went wrong, please try again later.", {
+            toastId: 126,
+          });
+        }
+      })();
+    }
   }, [pokemonName]);
 
   const handleSubmit = () => {

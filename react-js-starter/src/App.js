@@ -60,6 +60,7 @@ function App() {
             element={
               <PokemonForm
                 pokemonData={appState.pokemon}
+                welcomeData={appState.welcome}
                 save={save}
                 firstName={appState.welcome.firstName}
               />
@@ -67,7 +68,13 @@ function App() {
           />
           <Route
             path="/review"
-            element={<ReviewPage appData={appState} clear={clear} />}
+            element={
+              <ReviewPage
+                pokemonData={appState.pokemon}
+                welcomeData={appState.welcome}
+                clear={clear}
+              />
+            }
           />
         </Routes>
       </section>

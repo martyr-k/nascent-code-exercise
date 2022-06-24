@@ -8,8 +8,8 @@ export const getMagicNumber = (initialOne, initialTwo, firstName) => {
 };
 
 export const parsePokemonName = (name) => {
-  const parsedName = name.charAt(0).toUpperCase() + name.slice(1);
-  return parsedName.split("-").join(" ");
+  const parsedName = name?.charAt(0).toUpperCase() + name?.slice(1);
+  return parsedName ? parsedName?.split("-").join(" ") : null;
 };
 
 export const findPage = (list, limit, selectedPokemon) => {
