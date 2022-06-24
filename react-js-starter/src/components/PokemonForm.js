@@ -205,8 +205,10 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
         )}
         {method === "name" && (
           <div className="mb-4">
-            <FormLabel>Pokèmon Name:</FormLabel>
+            <FormLabel htmlFor="pokemonName">Pokèmon Name:</FormLabel>
             <TextInput
+              id="pokemonName"
+              name="pokemonName"
               type="text"
               placeholder="Charizard"
               error={error === "invalid-name"}
@@ -223,7 +225,7 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
         )}
         {method === "color" && (
           <div className="mb-4">
-            <FormLabel htmlFor="pokemonColor">Pokemon Color:</FormLabel>
+            <FormLabel htmlFor="pokemonColor">Pokèmon Color:</FormLabel>
             <SelectInput
               type="text"
               id="pokemonColor"
@@ -252,11 +254,11 @@ const PokemonForm = ({ pokemonData, save, firstName }) => {
         )}
         {method === "initials" && (
           <div className="mb-4">
-            <FormLabel htmlFor="initials">Initials:</FormLabel>
+            <FormLabel htmlFor="initialsSearch">Initials:</FormLabel>
             <TextInput
               type="text"
-              id="initials"
-              name="initials"
+              id="initialsSearch"
+              name="initialsSearch"
               onChange={handleInitialChange}
               value={initials}
               minLength={2}

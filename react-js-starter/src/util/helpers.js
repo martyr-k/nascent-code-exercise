@@ -12,7 +12,6 @@ export const parsePokemonName = (name) => {
 
 export const findPage = (list, limit, selectedPokemon) => {
   const pokemonIndex = list.findIndex((item) => item.name === selectedPokemon);
-  console.log(pokemonIndex);
 
   return pokemonIndex === -1 ? 0 : Math.floor(pokemonIndex / limit);
 };
