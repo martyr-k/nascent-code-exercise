@@ -7,7 +7,7 @@ describe("PokemonForm", () => {
   test("renders PokemonForm", () => {
     render(
       <BrowserRouter>
-        <PokemonForm pokemonData={{}} />
+        <PokemonForm pokemonData={{}} welcomeData={{ firstName: "Kelub" }} />
       </BrowserRouter>
     );
 
@@ -18,7 +18,7 @@ describe("PokemonForm", () => {
   test("validates method input", async () => {
     render(
       <BrowserRouter>
-        <PokemonForm pokemonData={{}} />
+        <PokemonForm pokemonData={{}} welcomeData={{ firstName: "Kelub" }} />
       </BrowserRouter>
     );
 
@@ -29,7 +29,7 @@ describe("PokemonForm", () => {
   test("validates pokemon name input", async () => {
     render(
       <BrowserRouter>
-        <PokemonForm pokemonData={{}} />
+        <PokemonForm pokemonData={{}} welcomeData={{ firstName: "Kelub" }} />
       </BrowserRouter>
     );
 
@@ -46,7 +46,7 @@ describe("PokemonForm", () => {
   test("validates initials input", async () => {
     render(
       <BrowserRouter>
-        <PokemonForm pokemonData={{}} />
+        <PokemonForm pokemonData={{}} welcomeData={{ firstName: "Kelub" }} />
       </BrowserRouter>
     );
 

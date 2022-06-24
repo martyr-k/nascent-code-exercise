@@ -8,7 +8,8 @@ describe("ReviewPage", () => {
     render(
       <BrowserRouter>
         <ReviewPage
-          appData={{ pokemon: { pokemonName: "tapu-fini" }, welcome: {} }}
+          pokemonData={{ pokemonName: "tapu-fini" }}
+          welcomeData={{ firstName: "Kelub" }}
         />
       </BrowserRouter>
     );
