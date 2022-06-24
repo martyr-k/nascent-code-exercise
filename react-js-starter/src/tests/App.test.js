@@ -104,4 +104,16 @@ describe("App", () => {
     fireEvent.click(screen.getByText("Review"));
     await screen.findByText("Sandaconda");
   });
+
+  test("submits to API successfully", async () => {
+    window.history.pushState({}, "", "/review");
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+
+    fireEvent.click(screen.getByText("Submit"));
+    await screen.findByText("Submission saved successfully!");
+  });
 });
